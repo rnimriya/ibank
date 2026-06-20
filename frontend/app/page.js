@@ -113,9 +113,8 @@ export default function Home() {
         </Link>
         
         <div className="hidden md:flex gap-8 items-center">
-          <a href="#features" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">Features</a>
+          <Link href="/api-docs" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">API Docs</Link>
           <a href="#pricing" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">Pricing</a>
-          <a href="#faq" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">FAQ</a>
         </div>
 
         <div className="hidden md:flex gap-4 items-center">
@@ -142,7 +141,7 @@ export default function Home() {
               99.4% Extraction Accuracy
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
-              Bank Statements to <span className="text-blue-700">Excel</span> in Seconds.
+              Accurately Convert PDF <br className="hidden md:block" /><span className="text-blue-700">Bank Statements</span> to CSV.
             </h1>
             <p className="text-lg text-slate-600 max-w-lg leading-relaxed">
               Automate the extraction of transaction data from any global bank PDF. Secure, zero-storage processing built for CPAs, Finance teams, and individuals worldwide.
@@ -252,56 +251,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
+      {/* Trust Signals Section */}
+      <section className="py-12 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Why professionals choose us</h2>
-            <p className="text-lg text-slate-600">Built from the ground up for speed, precision, and zero-compromise security.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-[#f8fafc] p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-700 mb-6">
-                <ShieldCheck size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Privacy-First Processing</h3>
-              <p className="text-slate-600 leading-relaxed">Files are processed exclusively in RAM. We have a strict zero-storage policy, ensuring absolute compliance with global data protection laws.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="flex flex-col items-center text-center">
+              <ShieldCheck size={32} className="text-blue-700 mb-3" />
+              <h3 className="font-bold text-slate-900 mb-1">Bank-Grade Security</h3>
+              <p className="text-xs text-slate-500">Processed entirely in RAM</p>
             </div>
-            <div className="bg-[#f8fafc] p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-700 mb-6">
-                <FileJson size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">QuickBooks & Xero Ready</h3>
-              <p className="text-slate-600 leading-relaxed">Don't just stop at CSVs. We natively support exporting to OFX and QFX formats, ready to be imported directly into your accounting software.</p>
+            <div className="flex flex-col items-center text-center">
+              <Zap size={32} className="text-blue-700 mb-3" />
+              <h3 className="font-bold text-slate-900 mb-1">Highly Accurate OCR</h3>
+              <p className="text-xs text-slate-500">99.4% extraction precision</p>
             </div>
-            <div className="bg-[#f8fafc] p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center text-yellow-700 mb-6">
-                <Zap size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Lightning Fast</h3>
-              <p className="text-slate-600 leading-relaxed">Our optimized table extraction engine parses multipage PDFs in under 15 seconds with 99.4%+ accuracy, saving hours of manual data entry.</p>
+            <div className="flex flex-col items-center text-center">
+              <Building size={32} className="text-blue-700 mb-3" />
+              <h3 className="font-bold text-slate-900 mb-1">Used by Institutions</h3>
+              <p className="text-xs text-slate-500">Trusted by CPAs globally</p>
             </div>
-            <div className="bg-[#f8fafc] p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-700 mb-6">
-                <Wand2 size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Smart Categorization</h3>
-              <p className="text-slate-600 leading-relaxed">Define intelligent keyword rules to automatically categorize your transactions into proper accounting ledgers on the fly.</p>
-            </div>
-            <div className="bg-[#f8fafc] p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-700 mb-6">
-                <Users size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Agency Workspaces</h3>
-              <p className="text-slate-600 leading-relaxed">Invite junior accountants and clients to securely upload their PDFs directly to a shared pool with managed permissions.</p>
-            </div>
-            <div className="bg-[#f8fafc] p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-700 mb-6">
-                <FileText size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Global Templates</h3>
-              <p className="text-slate-600 leading-relaxed">We actively maintain precision extraction templates for thousands of international and regional banks worldwide.</p>
+            <div className="flex flex-col items-center text-center">
+              <Lock size={32} className="text-blue-700 mb-3" />
+              <h3 className="font-bold text-slate-900 mb-1">Anonymous Conversions</h3>
+              <p className="text-xs text-slate-500">No account required</p>
             </div>
           </div>
         </div>
@@ -343,41 +315,42 @@ export default function Home() {
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Basic Plan */}
-            <div className="border border-slate-200 rounded-2xl p-8 flex flex-col">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Basic</h3>
-              <p className="text-slate-500 text-sm mb-6">For individuals managing personal finances.</p>
-              <div className="mb-6"><span className="text-4xl font-extrabold">${annualBilling ? '9' : '12'}</span><span className="text-slate-500">/mo</span></div>
+            {/* Anonymous Plan */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Anonymous</h3>
+              <p className="text-slate-500 text-sm mb-6">For quick, one-off extractions.</p>
+              <div className="mb-6"><span className="text-4xl font-extrabold">Free</span></div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> Up to 50 pages / month</li>
-                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> CSV & Excel export</li>
+                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> 1 page / day</li>
+                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> CSV export</li>
+                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> No account required</li>
               </ul>
-              <button className="w-full py-3 border border-blue-600 text-blue-700 font-semibold rounded-lg hover:bg-blue-50">Get Started</button>
+              <Link href="/" className="w-full py-3 text-center border border-slate-300 text-slate-700 font-semibold rounded-lg hover:bg-slate-50 transition-colors">Upload Now</Link>
+            </div>
+            {/* Registered Plan */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Registered</h3>
+              <p className="text-slate-600 text-sm mb-6">For individuals managing personal finances.</p>
+              <div className="mb-6"><span className="text-4xl font-extrabold">Free</span></div>
+              <ul className="space-y-4 mb-8 flex-1">
+                <li className="flex items-start gap-3 text-sm text-slate-800"><Check size={18} className="text-blue-600 shrink-0" /> 5 pages / day</li>
+                <li className="flex items-start gap-3 text-sm text-slate-800"><Check size={18} className="text-blue-600 shrink-0" /> CSV & Excel exports</li>
+                <li className="flex items-start gap-3 text-sm text-slate-800"><Check size={18} className="text-blue-600 shrink-0" /> Dashboard history</li>
+              </ul>
+              <Link href="/signup" className="w-full py-3 text-center bg-blue-50 text-blue-700 font-semibold rounded-lg hover:bg-blue-100 transition-colors">Sign Up Free</Link>
             </div>
             {/* Pro Plan */}
-            <div className="border-2 border-blue-600 bg-blue-50/30 rounded-2xl p-8 flex flex-col relative md:-translate-y-4 shadow-xl shadow-blue-900/5">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">Most Popular</div>
+            <div className="bg-white border-2 border-blue-600 rounded-2xl p-8 flex flex-col relative md:-translate-y-4 shadow-xl shadow-blue-900/5">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">For Professionals</div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Pro</h3>
-              <p className="text-slate-600 text-sm mb-6">For freelancers and solo CPAs.</p>
-              <div className="mb-6"><span className="text-4xl font-extrabold">${annualBilling ? '29' : '39'}</span><span className="text-slate-500">/mo</span></div>
+              <p className="text-slate-500 text-sm mb-6">For CPAs and finance teams.</p>
+              <div className="mb-6"><span className="text-4xl font-extrabold">Subscribe</span></div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm text-slate-800"><Check size={18} className="text-blue-600 shrink-0" /> Up to 300 pages / month</li>
-                <li className="flex items-start gap-3 text-sm text-slate-800"><Check size={18} className="text-blue-600 shrink-0" /> OFX & QFX exports for QB/Xero</li>
-                <li className="flex items-start gap-3 text-sm text-slate-800"><Check size={18} className="text-blue-600 shrink-0" /> Rule-Based Auto-Categorization</li>
+                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> Unlimited bulk processing</li>
+                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> OFX & QFX exports</li>
+                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> Smart categorization rules</li>
               </ul>
-              <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-600/20">Go Pro</button>
-            </div>
-            {/* Business Plan */}
-            <div className="border border-slate-200 rounded-2xl p-8 flex flex-col">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Business</h3>
-              <p className="text-slate-500 text-sm mb-6">For CPA firms and finance teams.</p>
-              <div className="mb-6"><span className="text-4xl font-extrabold">${annualBilling ? '99' : '119'}</span><span className="text-slate-500">/mo</span></div>
-              <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> Unlimited pages*</li>
-                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> Agency Workspaces</li>
-                <li className="flex items-start gap-3 text-sm text-slate-700"><Check size={18} className="text-blue-600 shrink-0" /> Smart Email Pipeline</li>
-              </ul>
-              <button className="w-full py-3 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800">Contact Sales</button>
+              <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-600/20">View Plans</button>
             </div>
           </div>
         </div>
