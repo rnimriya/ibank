@@ -223,7 +223,23 @@ export default function Home() {
                   <h3 className="text-2xl font-bold text-slate-900 mb-2">Conversion Complete!</h3>
                   <p className="text-slate-600 mb-8">Your structured data is ready to download.</p>
                   <button 
-                    onClick={() => alert(`[DEMO] The ${targetFormat.toUpperCase()} file would normally download to your computer right now!`)}
+                    onClick={() => {
+                      // Generate a realistic dummy CSV for the demo
+                      const csvContent = "Date,Description,Amount,Balance\\n" +
+                                       "2023-10-01,Opening Balance,,5000.00\\n" +
+                                       "2023-10-02,ACH Electronic Credit from GUSTO PAYROLL,3200.00,8200.00\\n" +
+                                       "2023-10-05,STARBUCKS STORE #12345,-5.40,8194.60\\n" +
+                                       "2023-10-08,Amazon Web Services AWS.AMAZON.CO,-45.00,8149.60\\n" +
+                                       "2023-10-12,UBER *TRIP,-24.50,8125.10\\n" +
+                                       "2023-10-15,Withdrawal ATM,-100.00,8025.10\\n";
+                      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                      const link = document.createElement("a");
+                      link.href = URL.createObjectURL(blob);
+                      link.setAttribute("download", "extracted_statement_demo.csv");
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
                     className="w-full py-4 bg-green-600 text-white rounded-xl font-bold shadow-lg shadow-green-600/20 hover:bg-green-700 transition-all flex items-center justify-center gap-2 mb-4"
                   >
                     <Download size={20} /> Download {targetFormat.toUpperCase()}
