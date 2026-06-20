@@ -51,10 +51,18 @@ export default function Home() {
     formData.append("target_format", targetFormat);
 
     try {
-      const response = await fetch("http://localhost:8000/api/parse", {
-        method: "POST",
-        body: formData,
-      });
+      let response;
+      // VERCEL DEMO BYPASS: We don't have the Python backend deployed to the cloud yet.
+      // If we are on Vercel, we mock the backend processing delay to show the UI flow!
+      if (window.location.hostname.includes("vercel.app")) {
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        response = { ok: true, json: async () => ({ status: "mock_success" }) };
+      } else {
+        response = await fetch("http://localhost:8000/api/parse", {
+          method: "POST",
+          body: formData,
+        });
+      }
 
       if (!response.ok) throw new Error("Failed to process document");
       const result = await response.json();
@@ -214,7 +222,12 @@ export default function Home() {
                   <div className="w-20 h-20 rounded-full bg-green-100 text-green-600 flex items-center justify-center mb-6"><CheckCircle size={40} /></div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-2">Conversion Complete!</h3>
                   <p className="text-slate-600 mb-8">Your structured data is ready to download.</p>
-                  <button className="w-full py-4 bg-green-600 text-white rounded-xl font-bold shadow-lg shadow-green-600/20 hover:bg-green-700 transition-all flex items-center justify-center gap-2 mb-4"><Download size={20} /> Download {targetFormat.toUpperCase()}</button>
+                  <button 
+                    onClick={() => alert(`[DEMO] The ${targetFormat.toUpperCase()} file would normally download to your computer right now!`)}
+                    className="w-full py-4 bg-green-600 text-white rounded-xl font-bold shadow-lg shadow-green-600/20 hover:bg-green-700 transition-all flex items-center justify-center gap-2 mb-4"
+                  >
+                    <Download size={20} /> Download {targetFormat.toUpperCase()}
+                  </button>
                   <button onClick={resetFlow} className="text-sm font-medium text-slate-500">Convert another file</button>
                 </motion.div>
               )}
