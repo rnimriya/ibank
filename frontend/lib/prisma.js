@@ -1,22 +1,37 @@
-import Database from "better-sqlite3";
-import path from "node:path";
+let db;
 
-const globalForDb = globalThis;
-const dbPath = path.join(process.cwd(), "dev.db");
-const db = globalForDb.db ?? new Database(dbPath);
-if (process.env.NODE_ENV !== "production") globalForDb.db = db;
+try {
+  // Only attempt to load SQLite if we are NOT on Vercel
+  if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
+    const Database = require("better-sqlite3");
+    const path = require("node:path");
+    const dbPath = path.join(process.cwd(), "dev.db");
+    
+    db = globalThis.db ?? new Database(dbPath);
+    if (process.env.NODE_ENV !== "production") globalThis.db = db;
 
-// Initialize missing tables dynamically
-db.exec(`
-  CREATE TABLE IF NOT EXISTS Rule (
-    id TEXT PRIMARY KEY,
-    userId TEXT NOT NULL,
-    keyword TEXT NOT NULL,
-    category TEXT NOT NULL,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE
-  )
-`);
+    // Initialize missing tables dynamically
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS Rule (
+        id TEXT PRIMARY KEY,
+        userId TEXT NOT NULL,
+        keyword TEXT NOT NULL,
+        category TEXT NOT NULL,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES User(id) ON DELETE CASCADE
+      )
+    `);
+  } else {
+    throw new Error("Vercel production bypass");
+  }
+} catch (e) {
+  console.log("Using Mock Database for Vercel Demo Mode");
+  // Mock Database for Vercel Demo
+  db = {
+    prepare: () => ({ get: () => null, all: () => [], run: () => {} }),
+    exec: () => {}
+  };
+}
 
 const prisma = {
   rule: {
