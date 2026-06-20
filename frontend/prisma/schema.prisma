@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client"
+  output        = "../app/generated/prisma"
+  engineType    = "library"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("USER") // USER | ADMIN
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  subscription  Subscription?
+  conversions   Conversion[]
+}
+
+model Subscription {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id])
+  planType            String   @default("FREE") // FREE | BASIC | PRO | BUSINESS
+  pagesLimit          Int      @default(3)
+  pagesUsed           Int      @default(0)
+  billingCycleEnd     DateTime?
+  razorpayCustomerId  String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Conversion {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  bankName         String
+  fileName         String
+  pagesProcessed   Int
+  exportFormat     String   // CSV | XLSX | OFX | QFX
+  processingTimeMs Int      @default(0)
+  status           String   @default("completed") // completed | failed | processing
+  createdAt        DateTime @default(now())
+}
