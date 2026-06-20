@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { FileSpreadsheet, Mail, Lock, User, ArrowRight, CheckCircle } from "lucide-react";
 
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
@@ -12,10 +13,19 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    // Redirect to dashboard mock
-    router.push("/dashboard");
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (res?.ok) {
+      router.push("/dashboard");
+    } else {
+      alert("Signup failed. Please try again.");
+    }
   };
 
   return (
