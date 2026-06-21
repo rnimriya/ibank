@@ -3,9 +3,10 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Upload, FileText, Lock, CheckCircle, 
-  ChevronRight, Download, ShieldCheck, Zap, 
-  Building, Menu, X, ArrowRight, ChevronDown, Check
+  Upload, FileText, FileSpreadsheet, Lock, CheckCircle, 
+  ChevronRight, Download, ShieldCheck, Zap, FileJson, 
+  Check, Building, Menu, X, Star, Quote, ChevronDown, ArrowRight,
+  Wand2, Users
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import clsx from "clsx";
@@ -51,6 +52,8 @@ export default function Home() {
 
     try {
       let response;
+      // VERCEL DEMO BYPASS: We don't have the Python backend deployed to the cloud yet.
+      // If we are on Vercel, we mock the backend processing delay to show the UI flow!
       if (window.location.hostname.includes("vercel.app")) {
         await new Promise(resolve => setTimeout(resolve, 2500));
         response = { ok: true, json: async () => ({ status: "mock_success" }) };
@@ -80,116 +83,144 @@ export default function Home() {
     setLoadingText("Extracting tables...");
   };
 
+  const testimonials = [
+    { name: "John S.", role: "CPA", text: "Convert Statement saved my firm hundreds of hours during tax season. The OFX export goes straight into QuickBooks perfectly." },
+    { name: "Elena M.", role: "Freelance Consultant", text: "The zero-storage policy is exactly what my clients demand. I wouldn't trust any other tool with sensitive Chase statements." },
+    { name: "David K.", role: "Finance Manager", text: "The accuracy is unparalleled. It even handles those weird multi-line descriptions from Barclays statements without breaking the rows." },
+    { name: "Sarah D.", role: "Small Business Owner", text: "I used to spend my entire weekend manually typing out my HSBC statements to calculate expenses. Now it takes 15 seconds." },
+    { name: "Vikram R.", role: "Tax Advisor", text: "The Business tier's Smart Email Pipeline is a game changer. My clients just email their PDFs and they appear in my dashboard." },
+    { name: "Michael P.", role: "Accounting Lead", text: "We evaluated 4 different OCR tools. This is the only one that gets the opening and closing balances right 100% of the time." },
+  ];
+
   const faqs = [
-    { q: "Is my financial data secure?", a: "Yes. Zero disk storage. Processed entirely in RAM and permanently deleted." },
-    { q: "Do you support password-protected PDFs?", a: "Yes. We securely decrypt the file in-memory using the provided password." },
-    { q: "Which banks do you support?", a: "Over 10,000 major global banks." },
-    { q: "What happens if my conversion fails?", a: "It does not count against your quota. Layouts are logged to improve accuracy." },
+    { q: "Is my financial data secure?", a: "Yes. We have a strict zero disk storage policy. Your PDFs are processed entirely in RAM and are permanently deleted the moment the conversion is complete. We do not store your transaction history." },
+    { q: "Do you support password-protected PDFs?", a: "Absolutely. If your bank statement requires a password to open, you can securely enter it during the upload flow. We use it solely to decrypt the file in-memory." },
+    { q: "Which banks do you support?", a: "We support over 10,000 major banks globally including JPMorgan Chase, Bank of America, HSBC, Barclays, Citibank, Wells Fargo, and many regional institutions." },
+    { q: "Can I import the exported file into QuickBooks or Xero?", a: "Yes! If you are on our Pro or Business plan, you can export directly to OFX or QFX formats, which can be natively imported into QuickBooks, Xero, and Tally without manual mapping." },
+    { q: "What happens if my conversion fails?", a: "If a conversion fails due to an unsupported layout, it does not count against your quota. Our system logs the layout format (but never the data) so our engineers can add support for it." },
+    { q: "How accurate is the table extraction?", a: "Our proprietary engine boasts a 99.4% accuracy rate. It specifically handles edge cases like multi-line transaction descriptions, missing dates, and wrapped columns." },
   ];
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans selection:bg-neutral-200">
+    <div className="min-h-screen bg-[#fafafa] text-zinc-900 font-sans selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden">
       {/* Navbar */}
-      <nav className="w-full py-5 px-6 md:px-12 flex justify-between items-center border-b border-black bg-white sticky top-0 z-50">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-black flex items-center justify-center text-white font-bold">
-            <span className="text-sm">CS</span>
+      <nav className="w-full py-4 px-6 md:px-12 flex justify-between items-center border-b border-white/20 bg-white/60 backdrop-blur-xl sticky top-0 z-50 shadow-sm shadow-zinc-200/20">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+            <FileSpreadsheet size={18} />
           </div>
-          <span className="font-bold text-lg tracking-tight">Convert Statement</span>
+          <span className="font-extrabold tracking-tight text-xl text-zinc-900">Convert Statement</span>
         </Link>
         
         <div className="hidden md:flex gap-8 items-center">
-          <Link href="/api-docs" className="text-sm font-semibold hover:opacity-70 transition-opacity">API Docs</Link>
-          <a href="#pricing" className="text-sm font-semibold hover:opacity-70 transition-opacity">Pricing</a>
+          <Link href="/api-docs" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">API Docs</Link>
+          <a href="#pricing" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">Pricing</a>
         </div>
 
-        <div className="hidden md:flex gap-4 items-center">
-          <Link href="/login" className="text-sm font-semibold hover:opacity-70 transition-opacity">Log In</Link>
-          <Link href="/signup" className="text-sm font-semibold px-6 py-2.5 bg-black text-white hover:bg-neutral-800 transition-colors">Sign Up Free</Link>
+        <div className="hidden md:flex gap-5 items-center">
+          <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors">Log In</Link>
+          <Link href="/signup" className="text-sm font-semibold px-5 py-2.5 rounded-full bg-zinc-900 text-white hover:bg-zinc-800 transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5">Sign Up Free</Link>
         </div>
 
-        <button className="md:hidden p-2 text-black" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        <button className="md:hidden p-2 text-slate-600" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-12 bg-white">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left Column: Copy & Value Prop */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 border-2 border-black text-black text-xs font-bold tracking-widest uppercase">
-              99.4% Precision
-            </div>
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-black leading-[1.05]">
-              Convert PDF <br className="hidden md:block" />Statements to CSV.
-            </h1>
-            <p className="text-lg text-neutral-600 max-w-lg leading-snug font-medium">
-              Automated transaction extraction. Zero-storage processing built for finance teams.
-            </p>
-          </div>
+      <section className="relative overflow-hidden pt-24 pb-32 px-6 md:px-12 flex flex-col items-center">
+        {/* Glowing Mesh Background */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-gradient-to-b from-indigo-500/10 via-violet-500/5 to-transparent blur-3xl pointer-events-none -z-10"></div>
+        <div className="absolute -top-40 right-20 w-[600px] h-[600px] rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none -z-10"></div>
+        <div className="absolute top-20 left-20 w-[500px] h-[500px] rounded-full bg-violet-500/10 blur-[100px] pointer-events-none -z-10"></div>
 
-          {/* Right Column: Uploader */}
-          <div className="border-2 border-black bg-white min-h-[440px] flex flex-col w-full max-w-lg mx-auto lg:ml-auto">
-            <div className="h-12 border-b-2 border-black bg-neutral-100 flex items-center px-4 gap-2">
-              <div className="w-3 h-3 bg-black"></div><div className="w-3 h-3 border border-black"></div><div className="w-3 h-3 border border-black"></div>
+        <div className="max-w-4xl mx-auto text-center relative z-10 mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/50 border border-zinc-200 text-zinc-800 text-sm font-semibold tracking-tight shadow-sm mb-8 backdrop-blur-md">
+            ✨ Introducing Convert Statement 2.0
+          </div>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-zinc-900 leading-[1.05] mb-8">
+            Accurately Convert PDF <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">Bank Statements</span> to CSV.
+          </h1>
+          <p className="text-lg md:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed mb-10 font-medium">
+            Automate the extraction of transaction data from any global bank PDF. Secure, zero-storage processing built for CPAs, Finance teams, and individuals.
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-zinc-600 font-medium">
+            <div className="flex items-center gap-2"><CheckCircle size={16} className="text-indigo-600"/> 10,000+ Banks</div>
+            <div className="flex items-center gap-2"><Lock size={16} className="text-indigo-600"/> Zero Storage</div>
+            <div className="flex items-center gap-2"><Zap size={16} className="text-indigo-600"/> ~15s Processing</div>
+          </div>
+        </div>
+
+        {/* Centered Uploader Glass Card */}
+        <div className="w-full max-w-2xl mx-auto relative z-20 group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-[32px] blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-indigo-900/5 border border-white overflow-hidden relative min-h-[440px] flex flex-col w-full">
+            <div className="h-10 border-b border-slate-100 bg-slate-50/50 flex items-center px-4 gap-2">
+              <div className="w-3 h-3 rounded-full bg-slate-300"></div><div className="w-3 h-3 rounded-full bg-slate-300"></div><div className="w-3 h-3 rounded-full bg-slate-300"></div>
             </div>
             <AnimatePresence mode="wait">
               {processingState === "idle" && (
-                <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col p-8">
-                  <h2 className="text-2xl font-bold mb-2 tracking-tight">Upload Document</h2>
-                  <p className="text-sm text-neutral-500 mb-8 font-medium">Free up to 3 pages.</p>
-                  <div {...getRootProps()} className={clsx("flex-1 border-2 border-dashed flex flex-col items-center justify-center p-8 transition-colors cursor-pointer group", isDragActive ? "border-black bg-neutral-100" : "border-neutral-300 hover:border-black hover:bg-neutral-50")}>
+                <motion.div key="idle" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex-1 flex flex-col p-10">
+                  <h2 className="text-2xl font-bold tracking-tight text-zinc-900 mb-1">Convert a Statement</h2>
+                  <p className="text-sm text-zinc-500 mb-8 font-medium">Free up to 1 page/day anonymously. No credit card required.</p>
+                  <div {...getRootProps()} className={clsx("flex-1 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-8 transition-all cursor-pointer", isDragActive ? "border-indigo-500 bg-indigo-50/50" : "border-zinc-200 hover:border-indigo-300 hover:bg-zinc-50/50")}>
                     <input {...getInputProps()} />
-                    <div className="w-16 h-16 bg-neutral-100 text-black flex items-center justify-center mb-6"><Upload size={28} /></div>
-                    <p className="text-lg font-bold mb-1">Drag & drop PDF</p>
-                    <p className="text-sm text-neutral-500 text-center font-medium">or click to browse</p>
+                    <div className="w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5 shadow-sm shadow-indigo-100"><Upload size={28} /></div>
+                    <p className="text-lg font-semibold text-zinc-800 mb-2">Drag & drop your PDF here</p>
+                    <p className="text-sm text-zinc-500 text-center">or click to browse from your computer</p>
                   </div>
                 </motion.div>
               )}
               {processingState === "password_prompt" && (
-                <motion.div key="password" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col p-8">
-                  <div className="mb-8 inline-flex items-center gap-3 border border-black px-4 py-2 text-sm font-bold"><FileText size={18} /><span>{file?.name}</span></div>
-                  <h2 className="text-2xl font-bold mb-2 tracking-tight">Protected File?</h2>
-                  <p className="text-sm text-neutral-600 mb-8 font-medium">Enter password if required.</p>
-                  <form onSubmit={handlePasswordSubmit} className="space-y-6">
+                <motion.div key="password" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex-1 flex flex-col p-10">
+                  <div className="mb-8 inline-flex items-center gap-3 bg-indigo-50/80 border border-indigo-100 text-indigo-700 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm"><FileText size={18} /><span>{file?.name}</span></div>
+                  <h2 className="text-2xl font-bold text-zinc-900 mb-2">Is this PDF protected?</h2>
+                  <p className="text-sm text-zinc-500 mb-8 font-medium">Many bank statements require a password. Leave blank if none.</p>
+                  <form onSubmit={handlePasswordSubmit} className="space-y-5">
                     <div>
+                      <label className="block text-sm font-semibold text-zinc-700 mb-2">PDF Password</label>
                       <div className="relative">
-                        <Lock size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-black" />
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full pl-12 pr-4 py-4 bg-neutral-50 border-2 border-black focus:outline-none focus:bg-white transition-colors font-medium" />
+                        <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password..." className="w-full pl-12 pr-4 py-3.5 bg-white border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all shadow-sm" />
                       </div>
                     </div>
-                    <button type="submit" className="w-full py-4 bg-black text-white font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2">Continue <ArrowRight size={18} /></button>
+                    <button type="submit" className="w-full py-4 bg-zinc-900 text-white rounded-xl font-bold hover:bg-zinc-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2">Continue <ChevronRight size={18} /></button>
                   </form>
-                  <button onClick={resetFlow} className="mt-6 text-sm font-bold text-neutral-500 hover:text-black transition-colors uppercase tracking-wider text-center w-full">Cancel</button>
+                  <button onClick={resetFlow} className="mt-6 text-sm font-semibold text-zinc-500 hover:text-zinc-800 transition-colors">Cancel</button>
                 </motion.div>
               )}
               {processingState === "format_selection" && (
-                <motion.div key="format" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col p-8">
-                  <h2 className="text-2xl font-bold mb-8 tracking-tight">Select Output Format</h2>
-                  <div className="grid grid-cols-2 gap-4 mb-8">
-                    {[{ id: 'csv', label: 'CSV' }, { id: 'xlsx', label: 'EXCEL' }, { id: 'ofx', label: 'OFX' }, { id: 'qfx', label: 'QFX' }].map((format) => (
-                      <button key={format.id} onClick={() => setTargetFormat(format.id)} className={clsx("p-5 border-2 text-left transition-colors font-bold tracking-widest", targetFormat === format.id ? "border-black bg-black text-white" : "border-neutral-200 text-neutral-500 hover:border-black hover:text-black")}>
-                        {format.label}
+                <motion.div key="format" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex-1 flex flex-col p-10">
+                  <h2 className="text-2xl font-bold text-zinc-900 mb-8">Select Output Format</h2>
+                  <div className="grid grid-cols-2 gap-4 mb-10">
+                    {[{ id: 'csv', label: 'CSV', desc: 'Standard data' }, { id: 'xlsx', label: 'Excel', desc: 'Formatted sheets' }, { id: 'ofx', label: 'OFX', desc: 'For Tally/Xero' }, { id: 'qfx', label: 'QFX', desc: 'For QuickBooks' }].map((format) => (
+                      <button key={format.id} onClick={() => setTargetFormat(format.id)} className={clsx("p-5 border-2 rounded-2xl text-left transition-all", targetFormat === format.id ? "border-indigo-600 bg-indigo-50/50 shadow-sm" : "border-zinc-200 hover:border-indigo-300 hover:bg-zinc-50/50")}>
+                        <div className={clsx("font-extrabold uppercase tracking-tight", targetFormat === format.id ? "text-indigo-700" : "text-zinc-800")}>{format.label}</div>
+                        <div className={clsx("text-xs mt-1 font-medium", targetFormat === format.id ? "text-indigo-500" : "text-zinc-500")}>{format.desc}</div>
                       </button>
                     ))}
                   </div>
-                  <button onClick={handleProcess} className="w-full py-4 bg-black text-white font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 mt-auto">Start Extraction</button>
-                  <button onClick={resetFlow} className="mt-6 text-sm font-bold text-neutral-500 hover:text-black transition-colors uppercase tracking-wider text-center w-full">Cancel</button>
+                  <button onClick={handleProcess} className="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-xl shadow-indigo-500/20 hover:-translate-y-0.5 flex items-center justify-center gap-2">Start Conversion</button>
+                  <button onClick={resetFlow} className="mt-6 text-sm font-semibold text-zinc-500 hover:text-zinc-800 transition-colors">Cancel</button>
                 </motion.div>
               )}
               {processingState === "processing" && (
-                <motion.div key="processing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-                  <div className="w-16 h-16 border-4 border-neutral-200 border-t-black animate-spin mb-8"></div>
-                  <h3 className="text-2xl font-bold mb-2 tracking-tight">Processing</h3>
-                  <p className="text-black font-semibold tracking-wide">{loadingText}</p>
+                <motion.div key="processing" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex-1 flex flex-col items-center justify-center p-10 text-center">
+                  <div className="relative mb-10">
+                    <div className="w-28 h-28 border-[6px] border-zinc-100 rounded-full"></div>
+                    <div className="w-28 h-28 border-[6px] border-indigo-600 rounded-full border-t-transparent animate-spin absolute top-0 left-0"></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-indigo-600"><FileText size={32} /></div>
+                  </div>
+                  <h3 className="text-2xl font-bold tracking-tight text-zinc-900 mb-3">Processing Document</h3>
+                  <motion.p key={loadingText} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="text-indigo-600 font-semibold">{loadingText}</motion.p>
                 </motion.div>
               )}
               {processingState === "complete" && (
-                <motion.div key="complete" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-                  <div className="w-16 h-16 bg-black text-white flex items-center justify-center mb-8"><CheckCircle size={32} /></div>
-                  <h3 className="text-3xl font-bold mb-3 tracking-tight">Complete</h3>
-                  <p className="text-neutral-600 mb-10 font-medium">Structured data ready.</p>
+                <motion.div key="complete" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex-1 flex flex-col items-center justify-center p-10 text-center">
+                  <div className="w-24 h-24 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-8 shadow-inner shadow-emerald-200/50"><CheckCircle size={48} /></div>
+                  <h3 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-3">Conversion Complete!</h3>
+                  <p className="text-zinc-500 mb-10 font-medium">Your structured data is ready to download.</p>
                   <button 
                     onClick={() => {
                       const csvContent = "Date,Description,Amount,Balance\\n" +
@@ -207,11 +238,11 @@ export default function Home() {
                       link.click();
                       document.body.removeChild(link);
                     }}
-                    className="w-full py-4 bg-black text-white font-bold hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 mb-6"
+                    className="w-full py-4 bg-zinc-900 text-white rounded-xl font-bold shadow-xl shadow-zinc-900/20 hover:bg-zinc-800 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-3 mb-6"
                   >
-                    <Download size={20} /> Download {targetFormat.toUpperCase()}
+                    <Download size={22} /> Download {targetFormat.toUpperCase()}
                   </button>
-                  <button onClick={resetFlow} className="text-sm font-bold text-neutral-500 hover:text-black uppercase tracking-widest">Convert another</button>
+                  <button onClick={resetFlow} className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Convert another file</button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -220,93 +251,178 @@ export default function Home() {
       </section>
 
       {/* Trust Signals Section */}
-      <section className="py-24 border-t-2 border-black bg-white">
+      <section className="py-16 bg-white border-y border-zinc-200/50">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 border-2 border-black">
-            <div className="flex flex-col p-8 border-b-2 md:border-b-0 md:border-r-2 border-black">
-              <ShieldCheck size={36} strokeWidth={1.5} className="mb-6" />
-              <h3 className="text-lg font-bold mb-2 tracking-tight">Security</h3>
-              <p className="text-sm font-medium text-neutral-600">Zero-storage policy. Ram-only.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-indigo-100 transition-all"><ShieldCheck size={28} className="text-indigo-600" /></div>
+              <h3 className="font-bold text-zinc-900 mb-1">Bank-Grade Security</h3>
+              <p className="text-xs text-zinc-500 font-medium">Processed entirely in RAM</p>
             </div>
-            <div className="flex flex-col p-8 border-b-2 md:border-b-0 md:border-r-2 border-black">
-              <Zap size={36} strokeWidth={1.5} className="mb-6" />
-              <h3 className="text-lg font-bold mb-2 tracking-tight">Accuracy</h3>
-              <p className="text-sm font-medium text-neutral-600">99.4% data extraction precision.</p>
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-indigo-100 transition-all"><Zap size={28} className="text-indigo-600" /></div>
+              <h3 className="font-bold text-zinc-900 mb-1">Highly Accurate OCR</h3>
+              <p className="text-xs text-zinc-500 font-medium">99.4% extraction precision</p>
             </div>
-            <div className="flex flex-col p-8 border-b-2 md:border-b-0 md:border-r-2 border-black">
-              <Building size={36} strokeWidth={1.5} className="mb-6" />
-              <h3 className="text-lg font-bold mb-2 tracking-tight">Institutions</h3>
-              <p className="text-sm font-medium text-neutral-600">Trusted by CPAs globally.</p>
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-indigo-100 transition-all"><Building size={28} className="text-indigo-600" /></div>
+              <h3 className="font-bold text-zinc-900 mb-1">Used by Institutions</h3>
+              <p className="text-xs text-zinc-500 font-medium">Trusted by CPAs globally</p>
             </div>
-            <div className="flex flex-col p-8">
-              <Lock size={36} strokeWidth={1.5} className="mb-6" />
-              <h3 className="text-lg font-bold mb-2 tracking-tight">Anonymous</h3>
-              <p className="text-sm font-medium text-neutral-600">No account required.</p>
+            <div className="flex flex-col items-center text-center group">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-indigo-100 transition-all"><Lock size={28} className="text-indigo-600" /></div>
+              <h3 className="font-bold text-zinc-900 mb-1">Anonymous Conversions</h3>
+              <p className="text-xs text-zinc-500 font-medium">No account required</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-24 bg-[#fafafa]">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 mb-6">Trusted by over 5,000 Finance Professionals</h2>
+            <p className="text-lg text-zinc-500 font-medium">Don't just take our word for it. See what CPAs and business owners globally are saying.</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {testimonials.map((t, idx) => (
+              <div key={idx} className="bg-white border border-zinc-200/50 p-8 rounded-[24px] relative shadow-sm hover:shadow-xl transition-shadow duration-300 group">
+                <Quote size={40} className="text-indigo-50 absolute top-6 right-6 group-hover:text-indigo-100 transition-colors" />
+                <div className="flex items-center gap-1 mb-6 relative z-10">
+                  {[...Array(5)].map((_, i) => <Star key={i} size={16} className="text-amber-400 fill-amber-400" />)}
+                </div>
+                <p className="text-zinc-700 leading-relaxed mb-8 font-medium relative z-10">"{t.text}"</p>
+                <div className="relative z-10">
+                  <h4 className="font-bold text-zinc-900">{t.name}</h4>
+                  <p className="text-sm text-zinc-500 font-medium">{t.role}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-32 bg-neutral-50 border-t-2 border-black">
+      <section id="pricing" className="py-24 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 tracking-tighter">Pricing</h2>
-            <div className="inline-flex items-center border-2 border-black p-1 bg-white">
-              <button onClick={() => setAnnualBilling(false)} className={clsx("px-6 py-2 text-sm font-bold tracking-wide uppercase transition-colors", !annualBilling ? "bg-black text-white" : "text-black hover:bg-neutral-100")}>Monthly</button>
-              <button onClick={() => setAnnualBilling(true)} className={clsx("px-6 py-2 text-sm font-bold tracking-wide uppercase transition-colors", annualBilling ? "bg-black text-white" : "text-black hover:bg-neutral-100")}>Annually</button>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Simple, transparent pricing</h2>
+            <div className="inline-flex items-center p-1 bg-slate-100 rounded-lg mt-4">
+              <button onClick={() => setAnnualBilling(false)} className={clsx("px-6 py-2 rounded-md text-sm font-medium transition-all", !annualBilling ? "bg-white shadow-sm text-slate-900" : "text-slate-500")}>Monthly</button>
+              <button onClick={() => setAnnualBilling(true)} className={clsx("px-6 py-2 rounded-md text-sm font-medium transition-all", annualBilling ? "bg-white shadow-sm text-slate-900" : "text-slate-500")}>Annually <span className="text-green-600">-20%</span></button>
             </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Anonymous Plan */}
-            <div className="bg-white border-2 border-black p-10 flex flex-col">
-              <h3 className="text-3xl font-bold mb-2 tracking-tight">Anonymous</h3>
-              <p className="text-neutral-500 text-sm mb-10 font-medium">For one-off extractions.</p>
-              <div className="mb-10"><span className="text-5xl font-bold tracking-tighter">Free</span></div>
+            <div className="bg-white border border-zinc-200 rounded-[24px] p-8 flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300">
+              <h3 className="text-xl font-bold text-zinc-900 mb-2">Anonymous</h3>
+              <p className="text-zinc-500 text-sm mb-8 font-medium">For quick, one-off extractions.</p>
+              <div className="mb-8"><span className="text-5xl font-extrabold tracking-tight text-zinc-900">Free</span></div>
               <ul className="space-y-4 mb-10 flex-1">
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-black flex items-center justify-center text-white"><Check size={14} /></div> 1 page / day</li>
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-black flex items-center justify-center text-white"><Check size={14} /></div> CSV export</li>
+                <li className="flex items-start gap-3 text-sm text-zinc-700 font-medium"><Check size={20} className="text-indigo-600 shrink-0" /> 1 page / day</li>
+                <li className="flex items-start gap-3 text-sm text-zinc-700 font-medium"><Check size={20} className="text-indigo-600 shrink-0" /> CSV export</li>
+                <li className="flex items-start gap-3 text-sm text-zinc-700 font-medium"><Check size={20} className="text-indigo-600 shrink-0" /> No account required</li>
               </ul>
-              <Link href="/" className="w-full py-4 text-center border-2 border-black text-black font-bold hover:bg-black hover:text-white transition-colors">Upload Now</Link>
+              <Link href="/" className="w-full py-4 text-center border-2 border-zinc-200 text-zinc-800 font-bold rounded-xl hover:bg-zinc-50 hover:border-zinc-300 transition-all">Upload Now</Link>
             </div>
             {/* Registered Plan */}
-            <div className="bg-white border-2 border-black p-10 flex flex-col">
-              <h3 className="text-3xl font-bold mb-2 tracking-tight">Registered</h3>
-              <p className="text-neutral-500 text-sm mb-10 font-medium">For personal finance.</p>
-              <div className="mb-10"><span className="text-5xl font-bold tracking-tighter">Free</span></div>
+            <div className="bg-white border border-zinc-200 rounded-[24px] p-8 flex flex-col shadow-sm hover:shadow-xl transition-shadow duration-300">
+              <h3 className="text-xl font-bold text-zinc-900 mb-2">Registered</h3>
+              <p className="text-zinc-500 text-sm mb-8 font-medium">For individuals managing personal finances.</p>
+              <div className="mb-8"><span className="text-5xl font-extrabold tracking-tight text-zinc-900">Free</span></div>
               <ul className="space-y-4 mb-10 flex-1">
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-black flex items-center justify-center text-white"><Check size={14} /></div> 5 pages / day</li>
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-black flex items-center justify-center text-white"><Check size={14} /></div> CSV & Excel exports</li>
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-black flex items-center justify-center text-white"><Check size={14} /></div> Dashboard history</li>
+                <li className="flex items-start gap-3 text-sm text-zinc-800 font-medium"><Check size={20} className="text-indigo-600 shrink-0" /> 5 pages / day</li>
+                <li className="flex items-start gap-3 text-sm text-zinc-800 font-medium"><Check size={20} className="text-indigo-600 shrink-0" /> CSV & Excel exports</li>
+                <li className="flex items-start gap-3 text-sm text-zinc-800 font-medium"><Check size={20} className="text-indigo-600 shrink-0" /> Dashboard history</li>
               </ul>
-              <Link href="/signup" className="w-full py-4 text-center bg-black text-white font-bold hover:bg-neutral-800 transition-colors">Sign Up Free</Link>
+              <Link href="/signup" className="w-full py-4 text-center bg-indigo-50 text-indigo-700 font-bold rounded-xl hover:bg-indigo-100 transition-colors">Sign Up Free</Link>
             </div>
             {/* Pro Plan */}
-            <div className="bg-black text-white border-2 border-black p-10 flex flex-col">
-              <h3 className="text-3xl font-bold mb-2 tracking-tight">Pro</h3>
-              <p className="text-neutral-400 text-sm mb-10 font-medium">For CPAs and finance teams.</p>
-              <div className="mb-10"><span className="text-5xl font-bold tracking-tighter">Subscribe</span></div>
-              <ul className="space-y-4 mb-10 flex-1">
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-white flex items-center justify-center text-black"><Check size={14} /></div> Bulk processing</li>
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-white flex items-center justify-center text-black"><Check size={14} /></div> OFX & QFX exports</li>
-                <li className="flex items-center gap-4 text-sm font-medium"><div className="w-5 h-5 bg-white flex items-center justify-center text-black"><Check size={14} /></div> Auto-categorization</li>
+            <div className="bg-zinc-900 text-white rounded-[24px] p-8 flex flex-col relative md:-translate-y-4 shadow-2xl shadow-indigo-900/20 group overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-indigo-500 to-violet-500 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">For Professionals</div>
+              <h3 className="text-xl font-bold mb-2 relative z-10">Pro</h3>
+              <p className="text-zinc-400 text-sm mb-8 font-medium relative z-10">For CPAs and finance teams.</p>
+              <div className="mb-8 relative z-10"><span className="text-5xl font-extrabold tracking-tight">Subscribe</span></div>
+              <ul className="space-y-4 mb-10 flex-1 relative z-10">
+                <li className="flex items-start gap-3 text-sm font-medium text-zinc-200"><Check size={20} className="text-indigo-400 shrink-0" /> Unlimited bulk processing</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-zinc-200"><Check size={20} className="text-indigo-400 shrink-0" /> OFX & QFX exports</li>
+                <li className="flex items-start gap-3 text-sm font-medium text-zinc-200"><Check size={20} className="text-indigo-400 shrink-0" /> Smart categorization rules</li>
               </ul>
-              <button className="w-full py-4 bg-white text-black font-bold hover:bg-neutral-200 transition-colors">View Plans</button>
+              <button className="w-full py-4 bg-white text-zinc-900 font-bold rounded-xl hover:bg-zinc-100 transition-all hover:-translate-y-0.5 relative z-10">View Plans</button>
             </div>
           </div>
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section id="faq" className="py-32 bg-[#fafafa]">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 mb-6">Frequently Asked Questions</h2>
+            <p className="text-lg text-zinc-500 font-medium">Everything you need to know about Convert Statement.</p>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="bg-white border border-zinc-200/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <button 
+                  onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                  className="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none"
+                >
+                  <span className="font-bold text-zinc-900 text-lg">{faq.q}</span>
+                  <ChevronDown size={20} className={clsx("text-zinc-400 transition-transform", openFaqIndex === idx && "rotate-180")} />
+                </button>
+                <AnimatePresence>
+                  {openFaqIndex === idx && (
+                    <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
+                      <div className="px-8 pb-6 text-zinc-500 leading-relaxed pt-2 font-medium">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-zinc-900"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 to-violet-900/40"></div>
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-500/20 rounded-full blur-[120px] -mr-40 -mt-40 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-violet-500/20 rounded-full blur-[120px] -ml-20 -mb-20 pointer-events-none"></div>
+        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+          <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-8">Ready to automate your data entry?</h2>
+          <p className="text-zinc-300 text-xl mb-12 max-w-2xl mx-auto font-medium leading-relaxed">Stop typing out PDF tables manually. Get accurate, structured Excel sheets in 15 seconds. Try it for free today.</p>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
+            <Link href="/signup" className="px-10 py-5 bg-white text-zinc-900 font-bold rounded-2xl shadow-2xl hover:bg-zinc-100 transition-all hover:-translate-y-1 flex items-center gap-3 text-lg">
+              Create Free Account <ArrowRight size={20} />
+            </Link>
+            <p className="text-zinc-400 text-sm font-semibold mt-2 sm:mt-0 sm:ml-2">No credit card required.<br/>Free daily quota.</p>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-black text-white py-16 border-t border-neutral-800">
+      <footer className="bg-zinc-950 text-zinc-400 py-16 border-t border-white/10 relative z-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-1">
-            <span className="font-bold text-2xl tracking-tight mb-4 block">Convert Statement</span>
-            <p className="text-sm text-neutral-400 font-medium">Extraction for professionals.</p>
+            <div className="flex items-center gap-3 mb-6 group">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20"><FileSpreadsheet size={20} /></div>
+              <span className="font-extrabold tracking-tight text-xl text-white">Convert Statement</span>
+            </div>
+            <p className="text-sm font-medium leading-relaxed">Simplifying financial data extraction for professionals everywhere.</p>
           </div>
-          <div><h4 className="font-bold mb-6 tracking-wide uppercase text-sm">Product</h4><ul className="space-y-3 text-sm text-neutral-400 font-medium"><li><a href="#features" className="hover:text-white transition-colors">Features</a></li><li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li></ul></div>
-          <div><h4 className="font-bold mb-6 tracking-wide uppercase text-sm">Resources</h4><ul className="space-y-3 text-sm text-neutral-400 font-medium"><li><Link href="/api-docs" className="hover:text-white transition-colors">API Docs</Link></li><li><Link href="/login" className="hover:text-white transition-colors">Log In</Link></li></ul></div>
-          <div><h4 className="font-bold mb-6 tracking-wide uppercase text-sm">Legal</h4><ul className="space-y-3 text-sm text-neutral-400 font-medium"><li><Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></li><li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li></ul></div>
+          <div><h4 className="text-zinc-100 font-bold mb-6">Product</h4><ul className="space-y-3 text-sm font-medium"><li><a href="#features" className="hover:text-white transition-colors">Features</a></li><li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li></ul></div>
+          <div><h4 className="text-zinc-100 font-bold mb-6">Resources</h4><ul className="space-y-3 text-sm font-medium"><li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li><li><Link href="/login" className="hover:text-white transition-colors">Log In</Link></li></ul></div>
+          <div><h4 className="text-zinc-100 font-bold mb-6">Legal</h4><ul className="space-y-3 text-sm font-medium"><li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li><li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li></ul></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 mt-16 pt-8 border-t border-zinc-800 text-sm flex flex-col md:flex-row justify-between items-center font-medium gap-4">
+          <p>© {new Date().getFullYear()} Convert Statement.</p>
+          <p>Made securely for the world 🌍</p>
         </div>
       </footer>
     </div>
