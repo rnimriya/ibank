@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Upload, FileText, Lock, CheckCircle, 
   ChevronRight, Download, ShieldCheck, Zap, 
-  Building, Menu, X, ArrowRight, ChevronDown
+  Building, Menu, X, ArrowRight, ChevronDown, Check
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import clsx from "clsx";
