@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
   FileSpreadsheet, LayoutDashboard, FileText, Settings, 
-  CreditCard, LogOut, Upload, Menu, X, Users, Wand2, PieChart
+  CreditCard, Upload, Menu, X, Users, Wand2, PieChart
 } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
@@ -26,27 +26,27 @@ export default function DashboardLayout({ children }) {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-neutral-50 flex font-sans text-black selection:bg-neutral-200">
       <Toaster position="top-right" />
       
       {/* Mobile Sidebar overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* Sidebar */}
       <div className={clsx(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-slate-300 transition-transform lg:translate-x-0 lg:static lg:block flex flex-col",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-black transition-transform lg:translate-x-0 lg:static lg:block flex flex-col",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <div className="h-16 flex items-center px-6 border-b border-slate-800">
-          <Link href="/" className="flex items-center gap-2 text-white">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold">
-              <FileSpreadsheet size={18} />
+        <div className="h-16 flex items-center px-6 border-b border-black">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-black flex items-center justify-center text-white font-bold">
+              <span className="text-sm">CS</span>
             </div>
-            <span className="font-bold text-lg">Convert Statement</span>
+            <span className="font-bold text-lg tracking-tight">Convert Statement</span>
           </Link>
-          <button className="ml-auto lg:hidden text-slate-400 hover:text-white" onClick={() => setSidebarOpen(false)}>
+          <button className="ml-auto lg:hidden text-black hover:text-neutral-600 transition-colors" onClick={() => setSidebarOpen(false)}>
             <X size={20} />
           </button>
         </div>
@@ -60,42 +60,42 @@ export default function DashboardLayout({ children }) {
                 key={item.name} 
                 href={item.href}
                 className={clsx(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                  isActive ? "bg-blue-600/10 text-blue-400" : "hover:bg-slate-800 hover:text-white"
+                  "flex items-center gap-3 px-4 py-3 text-sm font-bold transition-colors tracking-wide",
+                  isActive ? "bg-black text-white" : "text-neutral-500 hover:bg-neutral-100 hover:text-black"
                 )}
               >
-                <Icon size={18} />
+                <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
                 {item.name}
               </Link>
             )
           })}
         </div>
 
-        <div className="p-4 border-t border-slate-800">
-          <div className="bg-slate-800 rounded-xl p-4 mb-4">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Pro Plan</p>
-            <div className="w-full bg-slate-700 h-2 rounded-full mb-2 overflow-hidden">
-              <div className="bg-blue-500 h-full rounded-full" style={{ width: '45%' }}></div>
+        <div className="p-4 border-t border-black">
+          <div className="bg-neutral-50 border-2 border-black p-4 mb-4">
+            <p className="text-xs font-bold uppercase tracking-widest mb-3">Pro Plan</p>
+            <div className="w-full bg-neutral-200 h-2 mb-3">
+              <div className="bg-black h-full" style={{ width: '45%' }}></div>
             </div>
-            <p className="text-xs text-slate-300">135 / 300 pages used</p>
+            <p className="text-xs font-medium text-neutral-600">135 / 300 pages used</p>
           </div>
-          <SignOutButton className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800" />
+          <SignOutButton className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-neutral-500 hover:text-black transition-colors hover:bg-neutral-100 uppercase tracking-widest" />
         </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0">
-          <button className="lg:hidden text-slate-500 hover:text-slate-700" onClick={() => setSidebarOpen(true)}>
+        <header className="h-16 bg-white border-b border-black flex items-center justify-between px-4 sm:px-6 lg:px-8 shrink-0">
+          <button className="lg:hidden text-black hover:text-neutral-600 transition-colors" onClick={() => setSidebarOpen(true)}>
             <Menu size={24} />
           </button>
           
-          <div className="ml-auto flex items-center gap-4">
-            <Link href="/" className="hidden sm:flex items-center gap-2 bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors shadow-sm shadow-blue-700/20">
-              <Upload size={16} /> New Conversion
+          <div className="ml-auto flex items-center gap-6">
+            <Link href="/" className="hidden sm:flex items-center gap-2 bg-black text-white px-5 py-2 text-sm font-bold hover:bg-neutral-800 transition-colors">
+              <Upload size={16} /> New Extraction
             </Link>
-            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-sm border border-slate-300">
+            <div className="w-9 h-9 bg-neutral-100 flex items-center justify-center text-black font-bold text-sm border-2 border-black">
               RS
             </div>
           </div>
