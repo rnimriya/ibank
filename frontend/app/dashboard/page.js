@@ -37,89 +37,99 @@ export default async function Dashboard() {
   const usagePercentage = Math.min(100, Math.round((pagesUsed / pagesLimit) * 100));
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+    <div className="space-y-12">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 mb-1">Welcome back, {user.name?.split(" ")[0] || "User"}</h1>
-          <p className="text-sm font-medium text-zinc-500">Here's what's happening with your conversions today.</p>
+          <h1 className="text-4xl lg:text-5xl font-black uppercase tracking-tighter text-black mb-2 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+            WELCOME BACK, {user.name?.split(" ")[0] || "USER"}
+          </h1>
+          <p className="text-lg font-bold uppercase bg-[#ffde59] border-2 border-black inline-block px-3 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            HERE'S YOUR CONVERSION ACTIVITY TODAY.
+          </p>
         </div>
         <Link 
           href="/"
-          className="flex items-center gap-2 bg-zinc-900 text-white px-5 py-3 rounded-xl text-sm font-bold hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-900/10 hover:-translate-y-0.5"
+          className="flex items-center gap-3 bg-[#00c853] border-4 border-black text-black px-8 py-4 font-black uppercase shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all"
         >
-          <Upload size={18} /> Convert New PDF
+          <Upload size={24} strokeWidth={3} /> CONVERT NEW PDF
         </Link>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-[20px] p-6 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div className="absolute -right-6 -top-6 w-24 h-24 bg-indigo-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50"></div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50/80 flex items-center justify-center text-indigo-600 border border-indigo-100/50">
-              <FileSpreadsheet size={24} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Card 1 */}
+        <div className="bg-[#4a90e2] border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
+          <div className="flex justify-between items-start mb-8">
+            <div className="w-16 h-16 bg-white border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <FileSpreadsheet size={32} strokeWidth={3} />
             </div>
-            <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">
-              <ArrowUpRight size={14} /> {usagePercentage}%
+            <span className="flex items-center gap-1 text-sm font-black uppercase bg-white border-4 border-black px-3 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <ArrowUpRight size={18} strokeWidth={3} /> {usagePercentage}%
             </span>
           </div>
-          <h3 className="text-zinc-500 text-sm font-semibold relative z-10">Pages Converted</h3>
-          <p className="text-4xl font-extrabold tracking-tight text-zinc-900 mt-2 relative z-10">{pagesUsed} <span className="text-base text-zinc-400 font-medium">/ {pagesLimit}</span></p>
+          <h3 className="text-black text-xl font-black uppercase mb-1">PAGES CONVERTED</h3>
+          <p className="text-6xl font-black tracking-tighter drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] text-white">
+            {pagesUsed} <span className="text-2xl text-black">/ {pagesLimit}</span>
+          </p>
         </div>
 
-        <div className="bg-white rounded-[20px] p-6 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div className="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50"></div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50/80 flex items-center justify-center text-emerald-600 border border-emerald-100/50">
-              <CheckCircle size={24} />
+        {/* Card 2 */}
+        <div className="bg-[#00c853] border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
+          <div className="flex justify-between items-start mb-8">
+            <div className="w-16 h-16 bg-white border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <CheckCircle size={32} strokeWidth={3} />
             </div>
-            <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">
-              <ArrowUpRight size={14} /> 4%
+            <span className="flex items-center gap-1 text-sm font-black uppercase bg-white border-4 border-black px-3 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <ArrowUpRight size={18} strokeWidth={3} /> 4%
             </span>
           </div>
-          <h3 className="text-zinc-500 text-sm font-semibold relative z-10">Success Rate</h3>
-          <p className="text-4xl font-extrabold tracking-tight text-zinc-900 mt-2 relative z-10">99.8%</p>
+          <h3 className="text-black text-xl font-black uppercase mb-1">SUCCESS RATE</h3>
+          <p className="text-6xl font-black tracking-tighter drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] text-white">
+            99.8%
+          </p>
         </div>
 
-        <div className="bg-white rounded-[20px] p-6 border border-zinc-200/60 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div className="absolute -right-6 -top-6 w-24 h-24 bg-rose-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50"></div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50/80 flex items-center justify-center text-rose-600 border border-rose-100/50">
-              <Clock size={24} />
+        {/* Card 3 */}
+        <div className="bg-[#ff5757] border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all">
+          <div className="flex justify-between items-start mb-8">
+            <div className="w-16 h-16 bg-white border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <Clock size={32} strokeWidth={3} />
             </div>
-            <span className="flex items-center gap-1 text-xs font-bold text-rose-600 bg-rose-50 border border-rose-100 px-2.5 py-1 rounded-full">
-              <ArrowDownRight size={14} /> 2s
+            <span className="flex items-center gap-1 text-sm font-black uppercase bg-white border-4 border-black px-3 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <ArrowDownRight size={18} strokeWidth={3} /> 2s
             </span>
           </div>
-          <h3 className="text-zinc-500 text-sm font-semibold relative z-10">Avg Processing Time</h3>
-          <p className="text-4xl font-extrabold tracking-tight text-zinc-900 mt-2 relative z-10">12s</p>
+          <h3 className="text-black text-xl font-black uppercase mb-1">AVG. PROCESSING TIME</h3>
+          <p className="text-6xl font-black tracking-tighter drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] text-white">
+            12s
+          </p>
         </div>
       </div>
 
       {/* Recent Conversions Table */}
-      <div className="bg-white rounded-[20px] border border-zinc-200/60 shadow-sm overflow-hidden">
-        <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-center bg-white">
-          <h2 className="text-lg font-bold text-zinc-900">Recent Conversions</h2>
-          <Link href="/dashboard/conversions" className="text-sm font-bold text-indigo-600 hover:text-indigo-700 transition-colors">View all</Link>
+      <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="px-8 py-6 border-b-4 border-black flex justify-between items-center bg-[#ffde59]">
+          <h2 className="text-2xl font-black uppercase tracking-tighter drop-shadow-[1px_1px_0px_rgba(0,0,0,1)] text-white mix-blend-difference">RECENT CONVERSIONS</h2>
+          <Link href="/dashboard/conversions" className="text-sm font-black uppercase border-b-4 border-black hover:bg-black hover:text-white transition-colors">VIEW ALL</Link>
         </div>
         
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-zinc-50/50 text-zinc-500 border-b border-zinc-200/50">
+          <table className="w-full text-left text-base whitespace-nowrap">
+            <thead className="bg-white border-b-4 border-black text-black">
               <tr>
-                <th className="px-6 py-4 font-bold text-xs uppercase tracking-wider">File Name</th>
-                <th className="px-6 py-4 font-bold text-xs uppercase tracking-wider">Bank</th>
-                <th className="px-6 py-4 font-bold text-xs uppercase tracking-wider">Pages</th>
-                <th className="px-6 py-4 font-bold text-xs uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 font-bold text-xs uppercase tracking-wider">Format</th>
-                <th className="px-6 py-4 font-bold text-xs uppercase tracking-wider text-right">Actions</th>
+                <th className="px-8 py-5 font-black uppercase tracking-widest border-r-4 border-black">FILE NAME</th>
+                <th className="px-8 py-5 font-black uppercase tracking-widest border-r-4 border-black">BANK</th>
+                <th className="px-8 py-5 font-black uppercase tracking-widest border-r-4 border-black">PAGES</th>
+                <th className="px-8 py-5 font-black uppercase tracking-widest border-r-4 border-black">DATE</th>
+                <th className="px-8 py-5 font-black uppercase tracking-widest border-r-4 border-black">FORMAT</th>
+                <th className="px-8 py-5 font-black uppercase tracking-widest text-right">ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100">
+            <tbody className="divide-y-4 divide-black">
               {conversions.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-10 text-center text-zinc-500 font-medium">
-                    No conversions yet. Head to the homepage to convert your first statement!
+                  <td colSpan="6" className="px-8 py-16 text-center text-xl font-black uppercase bg-[#f4f4f0]">
+                    NO CONVERSIONS YET. HEAD TO THE HOMEPAGE TO CONVERT YOUR FIRST STATEMENT!
                   </td>
                 </tr>
               ) : (
@@ -128,28 +138,28 @@ export default async function Dashboard() {
                   const formattedDate = new Date(conv.createdAt).toLocaleDateString(undefined, dateOptions);
                   
                   return (
-                    <tr key={conv.id} className="hover:bg-zinc-50/80 transition-colors group">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-500 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors shadow-sm">
-                            <FileText size={16} />
+                    <tr key={conv.id} className="hover:bg-[#ffde59] transition-colors group">
+                      <td className="px-8 py-6 border-r-4 border-black">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 border-2 border-black bg-white flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <FileText size={20} strokeWidth={3} />
                           </div>
-                          <span className="font-bold text-zinc-900">{conv.fileName}</span>
+                          <span className="font-black uppercase">{conv.fileName}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-zinc-600 font-medium">{conv.bankName}</td>
-                      <td className="px-6 py-4 text-zinc-600 font-medium">{conv.pagesProcessed}</td>
-                      <td className="px-6 py-4 text-zinc-500 font-medium">{formattedDate}</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-zinc-100 text-zinc-600 border border-zinc-200/50">
+                      <td className="px-8 py-6 font-bold uppercase border-r-4 border-black">{conv.bankName}</td>
+                      <td className="px-8 py-6 font-black text-xl border-r-4 border-black">{conv.pagesProcessed}</td>
+                      <td className="px-8 py-6 font-bold uppercase border-r-4 border-black">{formattedDate}</td>
+                      <td className="px-8 py-6 border-r-4 border-black">
+                        <span className="inline-flex items-center px-4 py-2 text-sm font-black uppercase bg-white border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                           {conv.exportFormat}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <DownloadButton conversion={conv} className="p-2 text-zinc-400 hover:text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors" />
-                          <button className="p-2 text-zinc-400 hover:text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors">
-                            <MoreVertical size={18} />
+                      <td className="px-8 py-6 text-right bg-[#f4f4f0] group-hover:bg-[#ffde59] transition-colors">
+                        <div className="flex justify-end gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <DownloadButton conversion={conv} className="p-3 bg-white border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:bg-[#4a90e2] transition-all" />
+                          <button className="p-3 bg-white border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:bg-[#ff5757] transition-all">
+                            <MoreVertical size={20} strokeWidth={3} />
                           </button>
                         </div>
                       </td>
